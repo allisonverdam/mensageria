@@ -17,6 +17,7 @@ public class ControllerCliente {
 			"Allison Verdam da Cunha");
 	Cliente c2 = new Cliente(2, "teste@gmail.com", true, "Jorge");
 	Cliente c3 = new Cliente(3, "fsfsfsf@gmail.com", true, "João");
+	Cliente c4 = new Cliente(4, "emailloucasso@gmail.com", true, "Cara");
 	ArrayList<Cliente> listaClientes = new ArrayList<Cliente>();
 
 	public ControllerCliente() {
@@ -24,6 +25,7 @@ public class ControllerCliente {
 		listaClientes.add(c1);
 		listaClientes.add(c2);
 		listaClientes.add(c3);
+		listaClientes.add(c4);
 	}
 
 	@CrossOrigin()
