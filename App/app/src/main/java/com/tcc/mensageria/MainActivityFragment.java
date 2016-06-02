@@ -69,7 +69,7 @@ public class MainActivityFragment extends Fragment {
             String JsonString = null;
 
             try {
-                String BASE_URL = "http://192.168.0.103:8080/cliente";
+                String BASE_URL = "http://189.71.16.96:8080/cliente";
 
                 URL url = new URL(BASE_URL);
 
