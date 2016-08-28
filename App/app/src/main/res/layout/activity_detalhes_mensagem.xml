@@ -7,13 +7,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.tcc.mensageria.view.MainActivity">
+    tools:context="com.tcc.mensageria.view.DetalhesMensagemActivity">
 
-    <fragment
-        android:id="@+id/fragmento_mensagens"
-        android:name="com.tcc.mensageria.view.MensagensFragment"
+    <TextView
+        android:id="@+id/detalhes_conteudo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_mensagens" />
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium" />
+
+    <TextView
+        android:id="@+id/detalhes_remetente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detalhes_conteudo"
+        android:fontFamily="sans-serif-light"
+        android:textStyle="italic" />
 
 </RelativeLayout>
+
