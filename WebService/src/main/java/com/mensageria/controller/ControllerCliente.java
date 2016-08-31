@@ -29,7 +29,7 @@ public class ControllerCliente {
 	}
 
 	@CrossOrigin()
-	@RequestMapping(value = "/cliente", method = RequestMethod.GET)
+	@RequestMapping(value = "/clientes", method = RequestMethod.GET)
 	public ArrayList<Cliente> getAllUsuarios() {
 
 		return listaClientes;
