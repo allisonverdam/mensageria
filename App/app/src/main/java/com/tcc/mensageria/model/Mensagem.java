@@ -3,10 +3,11 @@ package com.tcc.mensageria.model;
 /**
  * Created by rjr on 25/08/2016.
  */
-public class ItemDaLista {
+public class Mensagem {
     private int foto;
     private String remetente;
-    private String mensagem;
+    private String conteudo;
+    private String titulo;
     private boolean favorito = false;
 
     public String getRemetente() {
@@ -33,12 +34,20 @@ public class ItemDaLista {
         this.foto = foto;
     }
 
-    public String getMensagem() {
-        return mensagem;
+    public String getConteudo() {
+        return conteudo;
     }
 
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
+    public void setConteudo(String mensagem) {
+        this.conteudo = mensagem;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 }
 
