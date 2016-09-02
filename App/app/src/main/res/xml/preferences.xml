@@ -1,8 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:defaultValue="http://189.71.16.96:8080/"
-        android:key="endereco"
+        android:defaultValue="@string/endereco_default"
+        android:key="@string/pref_endereco_key"
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:singleLine="true"

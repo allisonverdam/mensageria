@@ -3,7 +3,6 @@ package com.tcc.mensageria.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -145,7 +144,7 @@ public class PreferenciasActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("endereco"));
+            bindPreferenceSummaryToValue(findPreference(getActivity().getString(R.string.pref_endereco_key)));
         }
 
         @Override

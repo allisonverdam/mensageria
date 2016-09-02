@@ -2,4 +2,7 @@
     <string name="app_name">Mensageria</string>
     <string name="action_settings">Preferencias</string>
     <string name="title_activity_preferencias">Preferencias</string>
+    
+    <string name="pref_endereco_key">Endereco</string>
+    <string name="endereco_default">192.168.0.105:8080/mensagens</string>
 </resources>

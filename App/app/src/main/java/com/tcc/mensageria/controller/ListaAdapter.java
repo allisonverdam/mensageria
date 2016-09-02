@@ -8,9 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tcc.mensageria.R;
-import com.tcc.mensageria.model.ItemDaLista;
+import com.tcc.mensageria.model.Mensagem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,12 +17,13 @@ import java.util.List;
  */
 public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHolder> {
 
-    private List<ItemDaLista> listaMensagens;
+    private List<Mensagem> listaMensagens;
 
     private ItemClickCallback itemClickCallback;
 
     public interface ItemClickCallback {
         void onItemClick(int p);
+
         void onSecondaryIconClick(int p);
     }
 
@@ -31,7 +31,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
         this.itemClickCallback = itemClickCallback;
     }
 
-    public ListaAdapter(List<ItemDaLista> listaMensagens) {
+    public ListaAdapter(List<Mensagem> listaMensagens) {
         this.listaMensagens = listaMensagens;
     }
 
@@ -43,10 +43,11 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
 
     @Override
     public void onBindViewHolder(ListaViewHolder holder, int posicao) {
-        ItemDaLista item = listaMensagens.get(posicao);
-        holder.conteudo.setText(item.getMensagem());
-        holder.remetente.setText(item.getRemetente());
-        if (item.isFavorito()) {
+        Mensagem mensagem = listaMensagens.get(posicao);
+        holder.conteudo.setText(mensagem.getConteudo());
+        holder.titulo.setText(mensagem.getTitulo());
+        holder.remetente.setText(mensagem.getRemetente());
+        if (mensagem.isFavorito()) {
             holder.favorito.setImageResource(R.drawable.ic_star_black_24dp);
         } else {
             holder.favorito.setImageResource(R.drawable.ic_star_border_black_24dp);
@@ -55,7 +56,13 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
 
     @Override
     public int getItemCount() {
-        return listaMensagens.size();
+        if(listaMensagens != null){
+            return listaMensagens.size();
+        }
+        else{
+            return 0;
+        }
+
     }
 
     class ListaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -63,6 +70,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
         ImageView foto;
         ImageView favorito;
         TextView conteudo;
+        TextView titulo;
         TextView remetente;
         View container;
 
@@ -73,6 +81,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
             favorito.setOnClickListener(this);
             remetente = (TextView) itemView.findViewById(R.id.remetente);
             conteudo = (TextView) itemView.findViewById(R.id.conteudo);
+            titulo = (TextView) itemView.findViewById(R.id.titulo);
             container = (View) itemView.findViewById(R.id.container_mensagem);
             container.setOnClickListener(this);
         }
@@ -87,7 +96,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
         }
     }
 
-    public void setListaMensagens(ArrayList<ItemDaLista> listaMensagens) {
+    public void setListaMensagens(List<Mensagem> listaMensagens) {
         this.listaMensagens.clear();
         this.listaMensagens.addAll(listaMensagens);
     }

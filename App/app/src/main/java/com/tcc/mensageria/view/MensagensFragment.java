@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tcc.mensageria.R;
 import com.tcc.mensageria.controller.ControleDados;
@@ -32,13 +33,14 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
     protected ListaAdapter adapter;
     protected ArrayList listaMensagens;
     protected RecyclerView.LayoutManager mLayoutManager;
+    protected TextView viewVazia;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         try {
-            listaMensagens = new ControleDados().execute().get();
+            listaMensagens = new ControleDados(getActivity()).execute().get();
         } catch (InterruptedException e) {
             Log.e(LOG_TAG, "Error ", e);
         } catch (ExecutionException e) {
@@ -60,11 +62,17 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_mensagens, container, false);
-
         recyclerView = (RecyclerView) rootView.findViewById(R.id.lista_mensagens);
+        viewVazia = (TextView) rootView.findViewById(R.id.view_vazia);
+        if(listaMensagens == null){
+            recyclerView.setVisibility(View.GONE);
+            viewVazia.setVisibility(View.VISIBLE);
+        }else{
+            recyclerView.setVisibility(View.VISIBLE);
+            viewVazia.setVisibility(View.GONE);
+        }
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-
         adapter = new ListaAdapter(listaMensagens);
         recyclerView.setAdapter(adapter);
         adapter.setItemClickCallback(this);
