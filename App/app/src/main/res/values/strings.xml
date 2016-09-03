@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Mensageria</string>
     <string name="action_settings">Preferencias</string>
+    <string name="action_refresh">Atualizar</string>
     <string name="title_activity_preferencias">Preferencias</string>
-    
+
+    <string name="view_vazia">Conexão com o servidor indisponivel</string>
+    <string name="descricao_foto">Foto do remetente da mensagem</string>
+
+    <!-- strings relacionadas a configurações-->
     <string name="pref_endereco_key">Endereco</string>
     <string name="endereco_default">192.168.0.105:8080/mensagens</string>
 </resources>

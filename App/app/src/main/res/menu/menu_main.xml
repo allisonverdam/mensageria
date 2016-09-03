@@ -9,6 +9,6 @@
         app:showAsAction="never" />
 
     <item android:id="@+id/action_refresh"
-        android:title="Atualizar"
+        android:title="@string/action_refresh"
         app:showAsAction="never" />
 </menu>

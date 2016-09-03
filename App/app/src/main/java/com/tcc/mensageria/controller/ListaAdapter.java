@@ -12,9 +12,7 @@ import com.tcc.mensageria.model.Mensagem;
 
 import java.util.List;
 
-/**
- * Created by rjr on 25/08/2016.
- */
+
 public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHolder> {
 
     private List<Mensagem> listaMensagens;
@@ -48,9 +46,9 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
         holder.titulo.setText(mensagem.getTitulo());
         holder.remetente.setText(mensagem.getRemetente());
         if (mensagem.isFavorito()) {
-            holder.favorito.setImageResource(R.drawable.ic_star_black_24dp);
+            holder.favorito.setImageResource(R.drawable.ic_star_black_36dp);
         } else {
-            holder.favorito.setImageResource(R.drawable.ic_star_border_black_24dp);
+            holder.favorito.setImageResource(R.drawable.ic_star_border_black_36dp);
         }
     }
 
@@ -67,12 +65,12 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
 
     class ListaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView foto;
-        ImageView favorito;
-        TextView conteudo;
-        TextView titulo;
-        TextView remetente;
-        View container;
+        final ImageView foto;
+        final ImageView favorito;
+        final TextView conteudo;
+        final TextView titulo;
+        final TextView remetente;
+        final View container;
 
         public ListaViewHolder(View itemView) {
             super(itemView);
@@ -82,7 +80,7 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
             remetente = (TextView) itemView.findViewById(R.id.remetente);
             conteudo = (TextView) itemView.findViewById(R.id.conteudo);
             titulo = (TextView) itemView.findViewById(R.id.titulo);
-            container = (View) itemView.findViewById(R.id.container_mensagem);
+            container = itemView.findViewById(R.id.container_mensagem);
             container.setOnClickListener(this);
         }
 
@@ -97,7 +95,6 @@ public class ListaAdapter extends RecyclerView.Adapter<ListaAdapter.ListaViewHol
     }
 
     public void setListaMensagens(List<Mensagem> listaMensagens) {
-        this.listaMensagens.clear();
-        this.listaMensagens.addAll(listaMensagens);
+        this.listaMensagens = listaMensagens;
     }
 }

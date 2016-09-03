@@ -20,41 +20,36 @@ import com.tcc.mensageria.model.Mensagem;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by rjr on 27/08/2016.
- */
 public class MensagensFragment extends Fragment implements ListaAdapter.ItemClickCallback {
     private final String LOG_TAG = ControleDados.class.getSimpleName();
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_MENSAGEM = "EXTRA_MENSAGEM";
     private static final String EXTRA_REMETENTE = "EXTRA_REMETENTE";
 
-    protected RecyclerView recyclerView;
-    protected ListaAdapter adapter;
-    protected ArrayList listaMensagens;
-    protected RecyclerView.LayoutManager mLayoutManager;
-    protected TextView viewVazia;
+    private RecyclerView recyclerView;
+    private ListaAdapter adapter;
+    private ArrayList listaMensagens;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private TextView viewVazia;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        try {
-            listaMensagens = new ControleDados(getActivity()).execute().get();
-        } catch (InterruptedException e) {
-            Log.e(LOG_TAG, "Error ", e);
-        } catch (ExecutionException e) {
-            Log.e(LOG_TAG, "Error ", e);
-        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-//        if (id == R.id.action_refresh) {
-//        new ControleDados().execute();
-//        }
+        if (id == R.id.action_refresh) {
+            popularLista();
+            if(!listaVazia()){
+                adapter.setListaMensagens(listaMensagens);
+                adapter.notifyDataSetChanged();
+            }
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -64,13 +59,10 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
         View rootView = inflater.inflate(R.layout.fragment_mensagens, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.lista_mensagens);
         viewVazia = (TextView) rootView.findViewById(R.id.view_vazia);
-        if(listaMensagens == null){
-            recyclerView.setVisibility(View.GONE);
-            viewVazia.setVisibility(View.VISIBLE);
-        }else{
-            recyclerView.setVisibility(View.VISIBLE);
-            viewVazia.setVisibility(View.GONE);
-        }
+
+        popularLista();
+        listaVazia();
+
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new ListaAdapter(listaMensagens);
@@ -107,5 +99,27 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
         adapter.setListaMensagens(listaMensagens);
         adapter.notifyDataSetChanged();
 
+    }
+
+    private void popularLista(){
+        try {
+            listaMensagens = new ControleDados(getActivity()).execute().get();
+        } catch (InterruptedException e) {
+            Log.e(LOG_TAG, "Error ", e);
+        } catch (ExecutionException e) {
+            Log.e(LOG_TAG, "Error ", e);
+        }
+    }
+
+    private boolean listaVazia(){
+        if(listaMensagens == null){
+            recyclerView.setVisibility(View.GONE);
+            viewVazia.setVisibility(View.VISIBLE);
+            return true;
+        }else{
+            recyclerView.setVisibility(View.VISIBLE);
+            viewVazia.setVisibility(View.GONE);
+            return false;
+        }
     }
 }

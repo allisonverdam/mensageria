@@ -1,8 +1,6 @@
 package com.tcc.mensageria.model;
 
-/**
- * Created by rjr on 25/08/2016.
- */
+
 public class Mensagem {
     private int foto;
     private String remetente;

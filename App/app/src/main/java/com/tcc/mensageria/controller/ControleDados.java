@@ -21,13 +21,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * Created by rjr on 25/08/2016.
- */
+
 public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
 
     private final String LOG_TAG = ControleDados.class.getSimpleName();
-    private ArrayList<Mensagem> listaMensagens;
+    ArrayList<Mensagem> listaMensagens;
     private Context context;
 
     public ControleDados(Context context) {
@@ -99,7 +97,7 @@ public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
             return null;
         }
 
-        ArrayList<Mensagem> data = new ArrayList<Mensagem>();
+        ArrayList<Mensagem> data = new ArrayList<>();
 
         try {
             JSONArray jsonArray = new JSONArray(JSON);
