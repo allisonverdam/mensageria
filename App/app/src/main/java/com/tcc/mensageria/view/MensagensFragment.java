@@ -1,11 +1,13 @@
 package com.tcc.mensageria.view;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,28 +15,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tcc.mensageria.R;
-import com.tcc.mensageria.controller.ControleDados;
 import com.tcc.mensageria.controller.ListaAdapter;
+import com.tcc.mensageria.controller.MensageriaService;
 import com.tcc.mensageria.model.Mensagem;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MensagensFragment extends Fragment implements ListaAdapter.ItemClickCallback {
-    private final String LOG_TAG = ControleDados.class.getSimpleName();
+    private final String LOG_TAG = MensageriaService.class.getSimpleName();
     private static final String BUNDLE_EXTRAS = "BUNDLE_EXTRAS";
     private static final String EXTRA_MENSAGEM = "EXTRA_MENSAGEM";
     private static final String EXTRA_REMETENTE = "EXTRA_REMETENTE";
 
     private RecyclerView recyclerView;
     private ListaAdapter adapter;
-    private ArrayList listaMensagens;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView viewVazia;
+    private Context context;
+
+    //static enquanto nao tem banco de dados
+    public static ArrayList listaMensagens;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getActivity();
         setHasOptionsMenu(true);
     }
 
@@ -44,7 +49,7 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             popularLista();
-            if(!listaVazia()){
+            if (!listaVazia()) {
                 adapter.setListaMensagens(listaMensagens);
                 adapter.notifyDataSetChanged();
             }
@@ -63,7 +68,7 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
         popularLista();
         listaVazia();
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new ListaAdapter(listaMensagens);
         recyclerView.setAdapter(adapter);
@@ -76,7 +81,7 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
     public void onItemClick(int p) {
         Mensagem item = (Mensagem) listaMensagens.get(p);
 
-        Intent i = new Intent(getActivity(), DetalhesMensagemActivity.class);
+        Intent i = new Intent(context, DetalhesMensagemActivity.class);
 
         Bundle extras = new Bundle();
         extras.putString(EXTRA_MENSAGEM, item.getConteudo());
@@ -101,22 +106,23 @@ public class MensagensFragment extends Fragment implements ListaAdapter.ItemClic
 
     }
 
-    private void popularLista(){
-        try {
-            listaMensagens = new ControleDados(getActivity()).execute().get();
-        } catch (InterruptedException e) {
-            Log.e(LOG_TAG, "Error ", e);
-        } catch (ExecutionException e) {
-            Log.e(LOG_TAG, "Error ", e);
-        }
+    private void popularLista() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+        String endereco = sharedPref.getString(getString(R.string.pref_endereco_key)
+                , getString(R.string.endereco_default));
+
+        Intent intent = new Intent(context, MensageriaService.class);
+        intent.putExtra(MensageriaService.ENDERECO_EXTRA, endereco);
+
+        context.startService(intent);
     }
 
-    private boolean listaVazia(){
-        if(listaMensagens == null){
+    private boolean listaVazia() {
+        if (listaMensagens == null) {
             recyclerView.setVisibility(View.GONE);
             viewVazia.setVisibility(View.VISIBLE);
             return true;
-        }else{
+        } else {
             recyclerView.setVisibility(View.VISIBLE);
             viewVazia.setVisibility(View.GONE);
             return false;

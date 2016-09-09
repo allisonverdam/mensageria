@@ -26,6 +26,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.tcc.mensageria.view.MainActivity" />
         </activity>
+        <service android:name=".controller.MensageriaService"/>
+        <receiver android:name=".controller.MensageriaService$AlarmReceiver" android:enabled="true"/>
     </application>
 
 </manifest>

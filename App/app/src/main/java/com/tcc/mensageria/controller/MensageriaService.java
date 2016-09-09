@@ -1,13 +1,13 @@
 package com.tcc.mensageria.controller;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.preference.PreferenceManager;
+import android.content.Intent;
 import android.util.Log;
 
-import com.tcc.mensageria.R;
 import com.tcc.mensageria.model.Mensagem;
+import com.tcc.mensageria.view.MensagensFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,32 +22,24 @@ import java.net.URL;
 import java.util.ArrayList;
 
 
-public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
+public class MensageriaService extends IntentService {
 
-    private final String LOG_TAG = ControleDados.class.getSimpleName();
-    ArrayList<Mensagem> listaMensagens;
-    private Context context;
+    private final String TAG = MensageriaService.class.getSimpleName();
+    public static final String ENDERECO_EXTRA = "ende";
 
-    public ControleDados(Context context) {
-        this.context = context;
+    public MensageriaService() {
+        super("Mensageria");
     }
 
     @Override
-    protected ArrayList<Mensagem> doInBackground(Void... params) {
-        listaMensagens = ParseJson(getJSON());
-        return listaMensagens;
-    }
-
-    private String getJSON() {
+    protected void onHandleIntent(Intent intent) {
         HttpURLConnection conexao = null;
         BufferedReader leitor = null;
         String JsonString = null;
 
         try {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             String URL_BASE = "http://";
-            String endereco = sharedPref.getString(context.getString(R.string.pref_endereco_key)
-                    , context.getString(R.string.endereco_default));
+            String endereco = intent.getStringExtra(ENDERECO_EXTRA);
             URL_BASE += endereco;
             URL url = new URL(URL_BASE);
 
@@ -60,7 +52,7 @@ public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
             StringBuffer buffer = new StringBuffer();
 
             if (inputStream == null) {
-                return null;
+                return;
             }
             leitor = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -70,13 +62,13 @@ public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
             }
 
             if (buffer.length() == 0) {
-                return null;
+                return;
             }
 
             JsonString = buffer.toString();
+            MensagensFragment.listaMensagens = ParseJson(JsonString);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
-            return null;
+            Log.e(TAG, "Error ", e);
         } finally {
             if (conexao != null) {
                 conexao.disconnect();
@@ -85,11 +77,10 @@ public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
                 try {
                     leitor.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                    Log.e(TAG, "Error closing stream", e);
                 }
             }
         }
-        return JsonString;
     }
 
     public ArrayList<Mensagem> ParseJson(String JSON) {
@@ -119,5 +110,15 @@ public class ControleDados extends AsyncTask<Void, Void, ArrayList<Mensagem>> {
         return data;
     }
 
+    public static class AlarmReceiver extends BroadcastReceiver {
+        private final String TAG = AlarmReceiver.class.getSimpleName();
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent sendIntent = new Intent(context, MensageriaService.class);
+            sendIntent.putExtra(MensageriaService.ENDERECO_EXTRA, intent.getStringExtra(MensageriaService.ENDERECO_EXTRA));
+            context.startService(sendIntent);
+            Log.d(TAG, "onReceive: ");
+        }
+    }
 }
 
