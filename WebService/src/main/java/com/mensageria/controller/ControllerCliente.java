@@ -2,16 +2,21 @@ package com.mensageria.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mensageria.model.Cliente;
+import com.mensageria.model.dao.ClienteDao;
+import com.mensageria.model.domain.Cliente;
 
 @RestController
 public class ControllerCliente {
+	
+	@Autowired
+	private ClienteDao clienteDao;
 
 	Cliente c1 = new Cliente(1, "allisonverdam@gmail.com", true,
 			"Allison Verdam da Cunha");
@@ -40,6 +45,19 @@ public class ControllerCliente {
 	public Cliente getUsuario(@PathVariable("id") int id) {
 
 		return listaClientes.get(id);
+	}
+	
+	@CrossOrigin()
+	@RequestMapping(value = "/criarCliente", method = RequestMethod.GET)
+	public String criarUsuarios(){
+		try {
+			Cliente cliente = new Cliente("teste@teste.com", false, "Teste");
+			clienteDao.save(cliente);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "deu ruim\n" + e.toString();
+		}	
+		return "sucesso";
 	}
 
 }

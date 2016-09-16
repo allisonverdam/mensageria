@@ -1,4 +1,4 @@
-package com.mensageria.model;
+package com.mensageria.model.domain;
 
 import java.util.ArrayList;
 

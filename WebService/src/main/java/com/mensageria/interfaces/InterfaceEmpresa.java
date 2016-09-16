@@ -2,9 +2,9 @@ package com.mensageria.interfaces;
 
 import java.util.ArrayList;
 
-import com.mensageria.model.Cliente;
-import com.mensageria.model.Mensagem;
-import com.mensageria.model.Token;
+import com.mensageria.model.domain.Cliente;
+import com.mensageria.model.domain.Mensagem;
+import com.mensageria.model.domain.Token;
 
 public interface InterfaceEmpresa {
 
