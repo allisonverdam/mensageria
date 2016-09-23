@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mensageria.model.Cliente;
-import com.mensageria.model.Empresa;
-import com.mensageria.model.Mensagem;
+import com.mensageria.model.domain.Cliente;
+import com.mensageria.model.domain.Empresa;
+import com.mensageria.model.domain.Mensagem;
 
 @RestController
 public class ControllerMensagem {

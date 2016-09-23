@@ -1,7 +1,7 @@
 package com.mensageria.interfaces;
 
-import com.mensageria.model.Cliente;
-import com.mensageria.model.Mensagem;
+import com.mensageria.model.domain.Cliente;
+import com.mensageria.model.domain.Mensagem;
 
 public interface InterfaceCliente {
 	
